@@ -1,0 +1,86 @@
+extends ../templates/base
+include ../templates/mixins/_reviewCard
+include ../templates/mixins/_overViewBox
+
+block append head            
+    //- mapbox    
+    script(src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js')
+    link(href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet')
+    //- stripe
+    <script src="https://js.stripe.com/v3/"></script>
+
+block content
+    //- section header
+    section.section-header 
+        .header__hero 
+            .header__hero-overlay &nbsp 
+            img.header__hero-img(src=`/img/tours/${tour.imageCover}` alt=tour.name)
+        .heading-box
+            h1.heading-primary
+                span #{tour.name} Tour
+            .heading-box__group
+                .heading-box__detail
+                    svg.heading-box__icon
+                        use(xlink:href="/img/icons.svg#icon-clock")
+                    span.heading-box__text #{tour.duration} days
+                .heading-box__detail
+                    svg.heading-box__icon
+                        use(xlink:href="/img/icons.svg#icon-map-pin")
+                    span.heading-box__text= tour.startLocation.description
+    //- section description
+    section.section-description
+        .overview-box
+            div
+                .overview-box__group 
+                    h2.heading-secondary.ma-bt-lg Quick facts
+
+                    -const nextDate = tour.startDates.find(date => Date.now() < date || date ).toLocaleString('en-us', {month: 'long', day: '2-digit', year: 'numeric'})
+
+                    +overviewBox('next date', nextDate , 'calendar')
+                    +overviewBox('Difficulty', tour.difficulty, 'trending-up')
+                    +overviewBox('Participants', tour.maxGroupSize, 'user')
+                    +overviewBox('Rating', `${tour.ratingsAverage}/5`, 'star')
+                .overview-box__group
+                    h2.heading-secondary.ma-bt-lg Your tour guides
+                    each user in tour.guides
+                        .overview-box__detail
+                            img.overview-box__img(src=`/img/users/${user.photo}` alt=user.name)
+                            span.overview-box__label= user.role === 'lead-guide' ? 'LEAD GUIDE': user.role === 'guide'? 'TOUR GUIDE': user.role
+                            span.overview-box__text= user.name
+        .description-box 
+            h2.heading-secondary.ma-bt-lg= `About ${tour.name} Tour`
+            - const description = tour.description && tour.description.split('\n');
+            p.description__text= description && description[0]
+            P.description__text= description && description[1]
+
+    //-  section pictures
+    section.section-pictures
+        each image, i in tour.images 
+            .picture-box 
+                img(class=`picture-box__img picture-box__img--${i + 1}` src=`/img/tours/${image}` alt=`${tour.name} ${i + 1}`)
+        
+    //- section map
+    section.section-map 
+        #map(data-locations= JSON.stringify(tour.locations) style='width: 100%; height: 655px')
+        //- mapbox javascript
+    //- section reviews
+    section.section-reviews
+        .reviews
+            each review in tour.reviews
+                +reviewCard(review)
+                        
+        //- section cta
+        
+    section.section-cta
+        .cta
+            .cta__img.cta__img--logo
+                img(src="/img/logo-white.png" alt="Natours logo")
+            img.cta__img.cta__img--1(src=`/img/tours/${tour.images[1]}` alt=tour.name)
+            img.cta__img.cta__img--2(src=`/img/tours/${tour.images[2]}` alt=tour.name)
+            .cta__content 
+                h2.heading-secondary What are you waiting for?
+                p.cta__text #{tour.duration} days. 1 adventure. Infinite memories. Make it yours today!
+                if user 
+                    button#book-tour.btn.btn--green.span-all-rows(data-tour-id=`${tour.id}`) Book tour now!
+                else 
+                    a.btn.btn--green.span-all-rows(href='http://localhost:5000/login') Login to book tour
