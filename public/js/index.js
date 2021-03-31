@@ -14,18 +14,13 @@ const userPasswordForm = document.querySelector(".form-user-password");
 const bookTourButton = document.getElementById('book-tour');
 
 // login
-loginForm && loginForm.addEventListener("submit", async (e) => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    e.preventDefault();
-    await login(email, password);
-});
-
-// show map
-mapBox && showMap();
+loginForm && loginForm.addEventListener("submit", login);
 
 // logout
 logoutButton && logoutButton.addEventListener('click', logout);
+
+// show map
+mapBox && showMap();
 
 // update user data
 userDataForm &&  userDataForm.addEventListener('submit', updateUserData);

@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { showAlert } from './alerts';
 
-export const login = async ( email, password) => {
+export const login = async (e) => {
+    e.preventDefault();
     try {
-        const res = await axios.post('http://localhost:5000/api/v1/users/login', { email, password });
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const res = await axios.post('/api/v1/users/login', { email, password });
         if (res.data.status === 'success') {
-            // location.assign('/');
             showAlert('success', 'Logged in successfully!');
             setTimeout(() => {
                 location.assign('/');

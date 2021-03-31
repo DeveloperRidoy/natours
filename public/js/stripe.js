@@ -9,7 +9,7 @@ export const bookTour = async () => {
         document.getElementById('book-tour').innerHTML = 'Processing...';
         const tourID = document.getElementById('book-tour').getAttribute('data-tour-id');
         // (1) Get checkout session from the API
-        const session = await (await axios.get(`http://localhost:5000/api/v1/bookings/checkout-session/${tourID}`)).data.session;
+        const session = await (await axios.get(`/api/v1/bookings/checkout-session/${tourID}`)).data.session;
 
         // (2) Create checkout form and charge credit card
         const result = await stripe.redirectToCheckout({ sessionId: session.id });

@@ -16,7 +16,7 @@ export const updateUserData = async (e) => {
 
   try {
     const res = await axios.patch(
-      "http://localhost:5000/api/v1/users/updateMe",
+      "/api/v1/users/updateMe",
       data
     );
     showAlert("success", res.data.message);
@@ -25,7 +25,7 @@ export const updateUserData = async (e) => {
       location.reload();
     }, 1500);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     showAlert("error", error.response.message);
   }
 };
@@ -44,7 +44,7 @@ export const updateUserPassword = async (e) => {
 
   try {
     const res = await axios.patch(
-      "http://localhost:5000/api/v1/users/update-password",
+      "/api/v1/users/update-password",
       data
     );
     showAlert("success", res.data.message);
@@ -53,7 +53,7 @@ export const updateUserPassword = async (e) => {
       location.reload();
     }, 1500);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     showAlert("error", error.response.data.message);
   }
 };

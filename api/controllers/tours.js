@@ -68,8 +68,8 @@ exports.getTourStats = async (req, res) => {
     })
 
   } catch (err) {
-    console.log(err);
-    res.status(500).json({status: 'fail', message: err.message})
+    //console.log(err);
+    res.status(500).json({ status: "fail", message: err.message });
   }
 }
 
@@ -127,7 +127,7 @@ exports.getMonthlyPlan = async (req, res) => {
       data: {plan}
     })
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res.status(500).json({ status: "fail", message: "server err" });
   }
 }
@@ -158,7 +158,7 @@ exports.getToursWihtin = async (req, res) => {
       data: {tours}
     })
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ status: 'fail', message: error.message });
   }
 }
@@ -204,7 +204,7 @@ exports.getDistances = async (req, res) => {
       data: {distances}
     })
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ status: 'fail', message: error.message });
   }
 }

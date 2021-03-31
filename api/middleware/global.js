@@ -32,7 +32,7 @@ exports.auth = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       if(error.message === 'invalid signature') return res.status(401).json({ status: "fail", message: 'token expired or invalid' });
       res.status(401).json({ status: 'fail', message: error.message});
     }

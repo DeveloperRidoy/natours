@@ -8,7 +8,7 @@ exports.deleteOneDoc = (Model) => async (req, res) => {
         message: `${Model.collection.name.slice(0, Model.collection.name.length - 1)} deleted`,
       });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       res.status(500).json({ status: "fail", message: err.message });
     }
   };
@@ -41,7 +41,7 @@ exports.getAllDocs = (Model) => async (req, res) => {
         data: { [Model.collection.name]: docs },
       });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       res.status(500).json({ status: "fail", message: err.message });
   }
 }
@@ -72,8 +72,12 @@ exports.updateOneDoc = (Model) => async (req, res) => {
       data: { updatedDoc },
     });
   } catch (err) {
-    console.log(err);
-    if (err.codeName === "DuplicateKey") return res.status(500).json({status: "fail",message: "Model with the same name already exists",});
+    //console.log(err);
+    if (err.codeName === "DuplicateKey")
+      return res.status(500).json({
+        status: "fail",
+        message: "Model with the same name already exists",
+      });
 
     res.status(500).json({ status: "fail", message: err.message });
   }
@@ -99,8 +103,14 @@ exports.createNewDoc = (Model) => async (req, res) => {
       },
     });     
   } catch (err) {
-    console.log(err);
-    if (err.code === 11000)return res.status(400).json({status: "fail",message: "Model with the same name already exists",});
+    // console.log(err);
+    if (err.code === 11000)
+      return res
+        .status(400)
+        .json({
+          status: "fail",
+          message: "Model with the same name already exists",
+        });
     res.status(500).json({ status: "fail", message: err.message });
   }
 };

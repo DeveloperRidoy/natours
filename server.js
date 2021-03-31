@@ -9,6 +9,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 // initialize app
 const app = express();
@@ -35,6 +36,9 @@ app.use(
 
 // connect to database 
 connectDB();
+
+// compress all text responses
+app.use(compression());
 
 // log api requests in development mode
 if (process.env.NODE_ENV === 'development') {
@@ -68,7 +72,7 @@ app.all('*', (req, res) => res.status(404).render('pages/error', { title: 'Not F
 const PORT = process.env.PORT || 5000;
  
 // Start server
-const server = app.listen(PORT, () => console.log('server running on port 5000'));
+const server = app.listen(PORT);
 
 // close server on unhandled rejection
 process.on('unhandledRejection', (err) => { 
@@ -76,7 +80,6 @@ process.on('unhandledRejection', (err) => {
   console.log('unhandled rejection, φ(゜▽゜*)♪, shutting down server...');
   server.close(() => process.exit(1))
 })
-// comment
 
 // handling uncaught exceptions
 process.on('uncaughtException', (err) => {
@@ -84,4 +87,6 @@ process.on('uncaughtException', (err) => {
   console.log("uncaught exception, φ(゜▽゜*)♪, shutting down server...");
   if(server) server.close(() => process.exit(1)); 
 });
-  
+
+
+     

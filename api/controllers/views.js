@@ -12,7 +12,7 @@ exports.getOverview = async (req, res) => {
     const tours = await Tour.find();
     res.render("pages/overview", { title: 'Overview', tours });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ status: "fail", message: error.message });
   }
 };
@@ -33,7 +33,7 @@ exports.getUserBookings = async (req, res) => {
     res.render('pages/overview.pug', { title: 'My Bookings', tours });
 
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ status: "fail", message: error.message });
   }
 };
@@ -49,7 +49,7 @@ exports.getTour = async (req, res) => {
         if (!tour) return res.status(404).json({ status: 'fail', message: 'resource not found' });
         res.render('pages/tour', {title: `${tour.name} Tour`, tour})
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ status: 'fail', message: error.message });
     }
 }

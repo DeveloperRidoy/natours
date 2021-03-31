@@ -46,7 +46,7 @@ exports.resizeUserPhoto = async (req, res, next) => {
       .toFile(`public/img/users/${req.body.photo}`);
     next();
   } catch (error) {
-    console.log(erro);
+    // console.log(erro);
     res.status(500).json({ status: 'fail', message: error.message });
   }
 }
@@ -84,7 +84,7 @@ exports.resizeTourImages = async (req, res, next) => {
     })
     next();
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ status: "fail", message: error.message });
   }
 }

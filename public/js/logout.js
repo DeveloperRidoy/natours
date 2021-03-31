@@ -4,7 +4,7 @@ import { showAlert } from "./alerts";
 export const logout = async () => {
   document.getElementById('logout').innerHTML = 'Logging out...'
   try {
-    const res = await axios.get(`http://localhost:5000/api/v1/users/logout`);
+    const res = await axios.get(`/api/v1/users/logout`);
       if (res.data.status === "success") {
         showAlert("success", "Logged out successfully!");
         setTimeout(() => {

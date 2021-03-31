@@ -28,7 +28,7 @@ exports.getUserBookings = async (req, res) => {
       })
 
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ status: "fail", message: error.message });
   }
 };
@@ -86,7 +86,7 @@ exports.getCheckoutSession = async (req, res) => {
         session
     })
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status('500').json({ status: 'fail', message: error.message });
     }
 }
@@ -112,7 +112,7 @@ exports.createBookingCheckout = async (req, res, next) => {
         res.redirect(req.originalUrl.split('?')[0]);
         next();
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ status: 'fail', message: error.message });
     }
 }
