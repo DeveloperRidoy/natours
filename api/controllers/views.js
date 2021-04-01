@@ -1,6 +1,4 @@
 const Tour = require("../../mongodb/models/tour");
-const jwt = require('jsonwebtoken');
-const User = require('../../mongodb/models/user');
 const Booking = require("../../mongodb/models/booking");
 
 // @route         GET /
@@ -38,7 +36,7 @@ exports.getUserBookings = async (req, res) => {
   }
 };
  
-// @route         GET tour/:slug
+// @route         GET /tour/:slug
 // @desc          Get tour page by slug
 // @accessibility Public
 
