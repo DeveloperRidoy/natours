@@ -83,6 +83,10 @@ exports.userAuth = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
+      if (error.message === ("invalid signature" || "jwt malformed"))
+        return res
+          .status(401)
+          .json({ status: "fail", message: "token expired or invalid" });
       res.status(401).render("pages/error", {title: "Error", msg: 'Please login to get access'})
     }
 }          

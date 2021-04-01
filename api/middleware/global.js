@@ -33,7 +33,10 @@ exports.auth = async (req, res, next) => {
         next();
     } catch (error) {
       // console.log(error);
-      if(error.message === 'invalid signature') return res.status(401).json({ status: "fail", message: 'token expired or invalid' });
+      if (error.message === ("invalid signature" || "jwt malformed"))
+        return res
+          .status(401)
+          .json({ status: "fail", message: "token expired or invalid" });
       res.status(401).json({ status: 'fail', message: error.message});
     }
 }          
