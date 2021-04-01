@@ -10,11 +10,18 @@ const hpp = require('hpp');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 // initialize app
 const app = express();
+ 
+// implement cors
+app.use(cors());
 
-// trust proxy
+// cors for prefilght request of complex request like delete, patch etc
+app.options('*', cors());
+
+// trust proxy 
 app.enable('trust proxy');
 
 // pug template engine
