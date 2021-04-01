@@ -14,12 +14,12 @@ Router.use(restrictTo('admin', 'lead-guide'))
 
 Router.get('/', getAllBookings)
 
+Router.get("/my-bookings", getUserBookings);
+
 // id checker for below routes
 Router.param("id", checkID);
-
-Router.get("/user/:id", getUserBookings);
 Router.route('/:id')
-    .get(checkIfDocExists(Booking), getBooking)
+    .get(getBooking)
     .patch(updateBooking)
     .delete(deleteBooking)
 

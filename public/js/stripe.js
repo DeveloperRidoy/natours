@@ -7,15 +7,17 @@ export const bookTour = async () => {
     );
     try {
         document.getElementById('book-tour').innerHTML = 'Processing...';
-        const tourID = document.getElementById('book-tour').getAttribute('data-tour-id');
-        // (1) Get checkout session from the API
+        const tourID = document.getElementById("book-tour").getAttribute("data-tour-id");
+
+        // (2) Get checkout session from the API
         const session = await (await axios.get(`/api/v1/bookings/checkout-session/${tourID}`)).data.session;
 
-        // (2) Create checkout form and charge credit card
+        // (3) Create checkout form and charge credit card
         const result = await stripe.redirectToCheckout({ sessionId: session.id });
         if (result.error) return showAlert('error', result.error.message);
 
     } catch (error) {
+        document.getElementById("book-tour").innerHTML = "Book tour now";
         showAlert('error', error.response ? error.response.data.message: error.message);
     }
 }

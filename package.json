@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon server",
+    "start": "node server",
+    "dev": "nodemon server",
     "prod": "SET NODE_ENV=production & nodemon server",
     "debug": "ndb server",
     "watch-js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js",
-    "build-js": "parcel build ./public/js/index.js --out-dir ./public/js --out-file bundle.js",
-    "dev": "concurrently \"npm:server\" \"npm:watch-js\""
+    "build-js": "parcel build ./public/js/index.js --out-dir ./public/js --out-file bundle.js"
+    
   },
   "author": "",
   "license": "ISC",
@@ -50,5 +51,8 @@
     "eslint-plugin-react": "^7.22.0",
     "parcel-bundler": "^1.12.5",
     "prettier": "^2.2.1"
+  },
+  "engines": {
+    "node": ">=10.0.0"
   }
 }

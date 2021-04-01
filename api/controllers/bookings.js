@@ -11,14 +11,14 @@ const { getAllDocs, getDoc, updateOneDoc, deleteOneDoc } = require('./handlerFac
 exports.getAllBookings = getAllDocs(Booking);
 
  
-// @route         GET /api/v1/bookings/user/:id
+// @route         GET /api/v1/bookings/my-bookings
 // @desc          Get user's bookings
 // @accessibility private
 
 exports.getUserBookings = async (req, res) => {
   try {
     // (1) Get all tour Ids from bookings
-    const bookings= await Booking.find({ user: req.params.id })
+      const bookings = await Booking.find({ user: req.user.id })
   
     // (3) render page with all ther tours
       res.json({
@@ -37,7 +37,18 @@ exports.getUserBookings = async (req, res) => {
 // @desc            Get all bookings
 // @accessibility   Private
 
-exports.getBooking = getDoc(Booking);
+exports.getBooking = async (req, res) => {
+    try {
+        const booking = await Booking.findOne({ user: req.user.id, tour: req.params.id });
+        if(!booking) return res.status(404).json({status: 'fail', message: 'No booking found'})
+        res.json({
+            status: 'success',
+            data: {booking}
+        })
+    } catch (error) {
+        res.status(500).json({status: 'fail', message: error.message})
+    }
+}
 
 // @route         patch api/v1/bookings/:id
 // @desc          update a booking
@@ -61,6 +72,10 @@ exports.getCheckoutSession = async (req, res) => {
     const tour = await Tour.findById(req.params.tourID);
     if (!tour) return res.status(404).json({ status: 'fail', message: 'Tour not found' });
 
+    // (2) Prevent user from booking duplicate tour
+    const duplicateTour = await Booking.findOne({ user: req.user.id, tour: req.params.tourID });
+    if(duplicateTour) return res.status(403).json({ status: "fail", message: "You have already booked this tour" });
+    
     // (2) Create checkout session
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],

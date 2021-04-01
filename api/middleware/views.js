@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const Booking = require('../../mongodb/models/booking');
 const User = require('../../mongodb/models/user');
 
 // check if user is logged in and inject it into res.locals
@@ -32,6 +33,10 @@ exports.isLoggedIn = async (req, res, next) => {
     
     // 5) parse user to req.locals so that pug templetes can have access to the user
     res.locals.user = user;
+
+    // 6) parse booked tours ids to use in pug template
+    const bookedTourIds = (await Booking.find({ user: user.id })).map(booking => booking.tour.id);
+    res.locals.bookedTourIds = bookedTourIds;
     next();
   } catch (error) {
     next()
