@@ -11,11 +11,12 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const cors = require('cors');
+const { webhookCheckout } = require('./api/controllers/bookings');
 
 // initialize app
 const app = express();
  
-// implement cors
+// implement cors 
 app.use(cors());
 
 // cors for prefilght request of complex request like delete, patch etc
@@ -55,11 +56,13 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('combined'));
 }
 
-// read data from the req body
-app.use(express.json());
+// calling this request before body parser because we need to handle raw json data for this specific url
+app.post('/webhook-checkout', express.raw({type: 'application/json'}), webhookCheckout);
 
-// read cookie from the req body
+// body parser, cookie parser and urlencoding
+app.use(express.json({limit: "10kb"}));
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // data sanitization against noSQL query injection
 app.use(mongoSanitize());

@@ -1,12 +1,11 @@
 const express = require('express');
-const { createBookingCheckout } = require('../controllers/bookings');
 const Router = express.Router();
 const { getOverview, getTour, getLogin, get404, getAccount, getUserBookings } = require('../controllers/views');
 const { isLoggedIn, userAuth } = require('../middleware/views');
 
 
 Router.use(isLoggedIn);
-Router.get('/', createBookingCheckout, getOverview);
+Router.get('/', getOverview);
 Router.get('/login', getLogin)
 Router.get('/tour/:slug', getTour);
 Router.get('/me', userAuth, getAccount);
