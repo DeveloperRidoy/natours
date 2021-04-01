@@ -14,6 +14,9 @@ const compression = require('compression');
 // initialize app
 const app = express();
 
+// trust proxy
+app.enable('trust proxy');
+
 // pug template engine
 app.set('view engine', 'pug');
 app.set('views',path.join(__dirname, 'views'));
@@ -85,8 +88,13 @@ process.on('unhandledRejection', (err) => {
 process.on('uncaughtException', (err) => {
   console.log(err);
   console.log("uncaught exception, φ(゜▽゜*)♪, shutting down server...");
-  if(server) server.close(() => process.exit(1)); 
+  server.close(() => process.exit(1)); 
 });
 
 
-     
+// handling SIGTERM
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received. 👏 Shutting down gracefully.');
+  server.close(() => console.log('💥Process terminated'));
+  // sigterm already stops the program..so no need to call process.exit.
+})

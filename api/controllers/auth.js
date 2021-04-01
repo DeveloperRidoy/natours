@@ -12,7 +12,7 @@ exports.signUp = async (req, res) => {
   try {
     const user = await User.create(req.body);
 
-    const token = jwtCookieToken(user, res);
+    const token = jwtCookieToken(user, req, res);
       
     // send welcome email 
     const url = `${req.protocol}://${req.get('Host')}/me`;
@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
       if (!passwordConfirmed) return res.status(403).json({ status: 'fail', message: 'invalid credentials' });
 
       // return json web token on successfull login
-      const token = jwtCookieToken(user, res);
+      const token = jwtCookieToken(user, req, res);
 
       // remove password before sending user data
       user.password = undefined;
@@ -210,7 +210,7 @@ exports.updatePassword = async (req, res) => {
     await user.save({ validateModifiedOnly: true });
 
     // (6) return response with token
-    const token = jwtCookieToken(user, res);
+    const token = jwtCookieToken(user, req, res);
     res.json({
       status: 'success',
       message: 'PASSWORD updated successfully',
