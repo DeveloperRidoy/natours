@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const connectDB = () => {
   // connect database
   const db = process.env.DATABASE.replace(
-    '<PASSWORD>',
+    'PASSWORD',
     process.env.DATABASE_PASSWORD
-  ).replace('<DATABASE_NAME>', process.env.DATABASE_NAME);
+  ).replace('DATABASE_NAME', process.env.DATABASE_NAME);
 
   mongoose
     .connect(db, {
