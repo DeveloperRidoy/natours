@@ -126,7 +126,7 @@ exports.webhookCheckout = (req, res) => {
 
         // (3) create a booking using the session object in stripeEvent
         if (stripeEvent.type === "checkout.session.completed") {
-           createBookingCheckout(stripeEvent.data.object);
+          createBookingCheckout(stripeEvent.data.object);
         }
 
         // (4) send confirmation response to stripe
