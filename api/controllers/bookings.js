@@ -125,7 +125,7 @@ exports.webhookCheckout = async (req, res) => {
         );
 
         // (3) create a booking using the session object in stripeEvent
-        await createBookingCheckout(stripeEvent);
+        stripeEvent.type === 'checkout.session.completed' && await createBookingCheckout(stripeEvent.data.object);
     
         // (4) send confirmation response to stripe
         res.json({ status: 'success', message: 'payment received and booking successful' });
