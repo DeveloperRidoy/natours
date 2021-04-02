@@ -1,7 +1,8 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const Booking = require('../../mongodb/models/booking');
 const Tour = require("../../mongodb/models/tour");
-const { getAllDocs, getDoc, updateOneDoc, deleteOneDoc } = require('./handlerFactory');
+const { createBookingCheckout } = require('../middleware/bookings');
+const { getAllDocs, updateOneDoc, deleteOneDoc } = require('./handlerFactory');
 
 
 // @route           GET /api/vi/bookings/
@@ -80,7 +81,7 @@ exports.getCheckoutSession = async (req, res) => {
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         // success_url: `${req.protocol}://${req.get('host')}/?tour=${tour.id}&user=${req.user.id}&price=${tour.price}`,
-        success_url: `${req.protocol}://${req.get('host')}/my-tours`,
+        success_url: `${req.protocol}://${req.get('host')}/my-bookings`,
         cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
         customer_email: req.user.email,
         client_reference_id: req.params.tourID,
@@ -107,39 +108,28 @@ exports.getCheckoutSession = async (req, res) => {
     }
 }
 
-
-// @route           GET /?tour=x&user=x&price=x
-// @desc            Add a booking
-// @accessibility   Private
-// @note            Don't need it anymore.Because now using stripe webhook that sends post request with raw json data to the api after successful payment
-// exports.createBookingCheckout = async (req, res, next) => {
-//     try {
-//         // temporary insecure solution...everyone can make booking without paying
-//         // (1) extract info from query
-//         const { tour, user, price } = req.query;
-
-//         // (2) check if query is for checkout
-//         if (!tour && !user && !price) return next();
- 
-//         // (3) add a booking
-//         await Booking.create({ tour, user, price });
-        
-//         // (4) ret rid of the query
-//         res.redirect(req.originalUrl.split('?')[0]);
-//         next();
-//     } catch (error) {
-//         // console.log(error);
-//         res.status(500).json({ status: 'fail', message: error.message });
-//     }
-// }
-
 // @route           GET website/webhook-checkout
 // @desc            Add a booking
 // @accessibility   Private
 
 exports.webhookCheckout = (req, res) => {
-    console.log(req.body);
-    res.json({
-        data: req.body
-    })
+    try {
+        // (1) get the signature from req.headers
+        const signature = req.headers["stipe-signature"];
+
+        // (2) get access to the checkout session success event 
+        const stripeEvent = stripe.webhooks.constructEvent(
+          req.body,
+          signature,
+          process.env.STRIPE_WEBHOOK_SECRET
+        );
+
+        // (3) create a booking using the session object in stripeEvent
+        if (stripeEvent.type === "checkout.session.completed") {
+            createBookingCheckout(stripeEvent.data.object);
+        }
+
+    } catch (error) {
+        res.status(500).json({ status: 'fail', message: `Webhook error: ${error.message}` });
+    } 
 }
