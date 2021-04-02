@@ -92,8 +92,17 @@ exports.userAuth = async (req, res, next) => {
 }
 
 // inject alert in the req.locals for pub templates if there is alert in ther query
-exports.catchAlert = (req, res, next) => {
-  if (req.query.alert) res.locals.alert = req.query.alert;
+exports.alerts = (req, res, next) => {
+  switch (req.query.alert) {
+    case 'booking_success':
+      res.locals.alert = 'Your booking  was successful! Please check your email for confirmation.'
+      break;
+    case 'booking_Fail':
+      res.locals.alert = 'Your booking was unsuccessful! Please try again later.';
+      break;
+    default:
+      break;
+  }
   // got to next middleware
   next();
 }
