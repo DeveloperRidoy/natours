@@ -8,7 +8,6 @@ exports.createBookingCheckout = async (session, res) => {
         const price = session.display_items[0].amount / 100;
         await Booking.create({ tour, user, price });
     } catch (error) {
-        res.status(500).json({ status: 'fail', message: `webhook error: ${error.message}` });
+        return res.status(500).json({ status: 'fail', message: `webhook error: ${error.message}` });
     }
 }
-    
