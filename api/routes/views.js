@@ -1,7 +1,7 @@
 const express = require('express');
 const Router = express.Router();
 const { getOverview, getTour, getLogin, get404, getAccount, getUserBookings } = require('../controllers/views');
-const { isLoggedIn, userAuth, alerts, alerts } = require('../middleware/views');
+const { isLoggedIn, userAuth, alerts } = require('../middleware/views');
 
 
 Router.use(isLoggedIn);
