@@ -1,4 +1,5 @@
 import '@babel/polyfill';
+import { showAlert } from './alerts';
 import { login } from './login';
 import { logout } from './logout';
 import { showMap } from './mapbox';
@@ -12,6 +13,9 @@ const logoutButton = document.getElementById("logout");
 const userDataForm = document.querySelector(".form-user-data");
 const userPasswordForm = document.querySelector(".form-user-password");
 const bookTourButton = document.getElementById('book-tour');
+
+// attributes
+const alert = document.body.getAttribute('alert');
 
 // login
 loginForm && loginForm.addEventListener("submit", login);
@@ -30,3 +34,6 @@ userPasswordForm && userPasswordForm.addEventListener('submit', updateUserPasswo
 
 // book tour via stripe
 bookTourButton && bookTourButton.addEventListener('click', bookTour);
+
+// show alert if there is alert in the body
+alert && showAlert('success', alert);

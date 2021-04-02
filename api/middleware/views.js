@@ -89,4 +89,11 @@ exports.userAuth = async (req, res, next) => {
           .json({ status: "fail", message: "token expired or invalid" });
       res.status(401).render("pages/error", {title: "Error", msg: 'Please login to get access'})
     }
-}          
+}
+
+// inject alert in the req.locals for pub templates if there is alert in ther query
+exports.catchAlert = (req, res, next) => {
+  if (req.query.alert) res.locals.alert = req.query.alert;
+  // got to next middleware
+  next();
+}
