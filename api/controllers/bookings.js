@@ -126,9 +126,11 @@ exports.webhookCheckout = (req, res) => {
 
         // (3) create a booking using the session object in stripeEvent
         if (stripeEvent.type === "checkout.session.completed") {
-            createBookingCheckout(stripeEvent.data.object);
+            await createBookingCheckout(stripeEvent.data.object);
         }
 
+        // (4) send confirmation response to stripe
+        res.json({ status: 'success', message: 'payment received and booking successful' });
     } catch (error) {
         res.status(500).json({ status: 'fail', message: `Webhook error: ${error.message}` });
     } 
