@@ -115,28 +115,28 @@ exports.getCheckoutSession = async (req, res) => {
 exports.webhookCheckout = async (req, res) => {
     let stripeEvent;
     try {
-    // (1) get the signature from req.headers
-    const signature = req.headers["stripe-signature"];
+      // (1) get the signature from req.headers
+      const signature = req.headers["stripe-signature"];
 
-    // (2) get access to the checkout session success event
-    stripeEvent = stripe.webhooks.constructEvent(
-      req.body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET
-    );
-  } catch (error) {
+      // (2) get access to the checkout session success event
+      stripeEvent = stripe.webhooks.constructEvent(
+        req.body,
+        signature,
+        process.env.STRIPE_WEBHOOK_SECRET
+      );
+
+      // (3) create a booking using the session object in stripeEvent
+      if (stripeEvent.type === "checkout.session.completed")
+        await createBookingCheckout(stripeEvent.data.object);
+
+      // (4) send confirmation response to stripe
+      res.json({
+        status: "success",
+        message: "payment received and booking successful",
+      });
+    } catch (error) {
     res
       .status(500)
       .json({ status: "fail", message: `Webhook error: ${error.message}` });
     }
-    
-  // (3) create a booking using the session object in stripeEvent
-  if (stripeEvent.type === "checkout.session.completed")
-    createBookingCheckout(stripeEvent.data.object);
-
-  // (4) send confirmation response to stripe
-  res.json({
-    status: "success",
-    message: "payment received and booking successful",
-  });
 }
