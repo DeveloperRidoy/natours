@@ -37,4 +37,4 @@ userPasswordForm && userPasswordForm.addEventListener('submit', updateUserPasswo
 bookTourButton && bookTourButton.addEventListener('click', bookTour);
 
 // show alert if there is alert in the body
-alertType && alertMsg && showAlert(alertType, alertMsg);
+alertType && alertMsg && showAlert(alertType, alertMsg, 10);
