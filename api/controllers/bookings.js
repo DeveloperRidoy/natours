@@ -115,7 +115,7 @@ exports.getCheckoutSession = async (req, res) => {
 exports.webhookCheckout = (req, res) => {
     try {
         // (1) get the signature from req.headers
-        const signature = req.headers["stipe-signature"];
+        const signature = req.headers["stripe-signature"];
 
         // (2) get access to the checkout session success event 
         const stripeEvent = stripe.webhooks.constructEvent(
