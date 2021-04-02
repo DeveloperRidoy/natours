@@ -95,10 +95,10 @@ exports.userAuth = async (req, res, next) => {
 exports.alerts = (req, res, next) => {
   switch (req.query.alert) {
     case 'booking_success':
-      res.locals.alert = 'Your booking  was successful! Please check your email for confirmation.'
+      res.locals.alert = {type: 'success', msg:'Your booking  was successful! Please check your email for confirmation.'}
       break;
-    case 'booking_Fail':
-      res.locals.alert = 'Your booking was unsuccessful! Please try again later.';
+    case 'booking_fail':
+      res.locals.alert = {type: 'error', msg:'Your booking was unsuccessful! Please try again later.'};
       break;
     default:
       break;

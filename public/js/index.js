@@ -15,7 +15,8 @@ const userPasswordForm = document.querySelector(".form-user-password");
 const bookTourButton = document.getElementById('book-tour');
 
 // attributes
-const alert = document.body.getAttribute('alert');
+const alertType = document.body.getAttribute('alert-type');
+const alertMsg = document.body.getAttribute('alert-msg');
 
 // login
 loginForm && loginForm.addEventListener("submit", login);
@@ -36,4 +37,4 @@ userPasswordForm && userPasswordForm.addEventListener('submit', updateUserPasswo
 bookTourButton && bookTourButton.addEventListener('click', bookTour);
 
 // show alert if there is alert in the body
-alert && showAlert('success', alert);
+alertType && alertMsg && showAlert(alertType, alertMsg);
