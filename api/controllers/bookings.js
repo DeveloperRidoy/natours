@@ -112,7 +112,7 @@ exports.getCheckoutSession = async (req, res) => {
 // @desc            Add a booking
 // @accessibility   Private
 
-exports.webhookCheckout = (req, res) => {
+exports.webhookCheckout = async (req, res) => {
     try {
         // (1) get the signature from req.headers
         const signature = req.headers["stripe-signature"];
@@ -125,10 +125,8 @@ exports.webhookCheckout = (req, res) => {
         );
 
         // (3) create a booking using the session object in stripeEvent
-        if (stripeEvent.type === "checkout.session.completed") {
-          createBookingCheckout(stripeEvent.data.object);
-        }
-
+        await createBookingCheckout(stripeEvent);
+    
         // (4) send confirmation response to stripe
         res.json({ status: 'success', message: 'payment received and booking successful' });
     } catch (error) {
