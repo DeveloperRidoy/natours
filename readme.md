@@ -4,4 +4,4 @@ Built with NodeJs, Express, MongoDB and Mongoose
 
 hosted website link:
 
-[natorus](https://natours5130.herokuapp.com)
+[natours](https://natours5130.herokuapp.com)
